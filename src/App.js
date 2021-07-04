@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useToggle } from './hooks/customeHooks';
-import { CSSTransition } from 'react-transition-group';
+// import { CSSTransition } from 'react-transition-group';
 
 import './App.css';
 import Personalization from './pages/Personalization';
