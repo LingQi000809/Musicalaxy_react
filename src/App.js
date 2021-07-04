@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { useToggle } from './hooks/customeHooks';
 import { CSSTransition } from 'react-transition-group';
 
 import './App.css';
@@ -9,30 +10,6 @@ function App() {
   const [curPage, setCurPage] = useState('PERSONALIZATION');
   const [nextPage, setNextPage] = useState(null);
   const [isAnimated, toggleAnimated] = useToggle();
-
-  // animation props
-
-  const AnimationProps = {
-    in: isAnimated,
-    timeout: 1000,
-  }
-
-  const fromProps = {
-    ...AnimationProps,
-    classNames: 'from',
-    onEntered: finishPageSwitch
-  }
-
-  const toProps = {
-    ...AnimationProps,
-    classNames: 'to'
-  }
-
-  // page props
-
-  const pageProps = {
-    onPageSwitch: startPageSwitch
-  };
 
   // page switch
 
@@ -58,14 +35,41 @@ function App() {
     }
   }
 
+  // animation props
+
+  const AnimationProps = {
+    in: isAnimated,
+    timeout: 1000,
+  }
+
+  const fromProps = {
+    ...AnimationProps,
+    classNames: 'from',
+    onEntered: finishPageSwitch
+  }
+
+  const toProps = {
+    ...AnimationProps,
+    classNames: 'to'
+  }
+
+  // page props
+
+  const pageProps = {
+    onPageSwitch: startPageSwitch
+  };
+
+  
+
   return (
     <>
-    <CSSTransition {...fromProps}>
       {renderSwitch(curPage)}
-    </CSSTransition>
-    <CSSTransition {...toProps}>
-      {renderSwitch(nextPage)}
-    </CSSTransition>
+      {/* <CSSTransition {...fromProps}>
+        {renderSwitch(curPage)}
+      </CSSTransition>
+      <CSSTransition {...toProps}>
+        {renderSwitch(nextPage)}
+      </CSSTransition> */}
     </>
   );
 }
