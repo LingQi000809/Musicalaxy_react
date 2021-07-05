@@ -1,10 +1,12 @@
-#colorSquare {
+#canvas {
+    width: 98vh;
     height: 98vh;
     cursor: pointer;
 }
 
 @media (max-aspect-ratio: 3/2) {
-    #colorSquare {
+    #canvas {
         height: 64vw;
+        width: 64vw;
     }
 }
