@@ -5,7 +5,7 @@ function Square({id, clr, size, removeSquare}) {
 
     let side = 6 * size + "vw";
     let squareStyle = {
-        display: "inline-block",
+        display: "block",
         backgroundColor: clr,
         width: side,
         height: "30%",
