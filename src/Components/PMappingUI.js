@@ -1,37 +1,62 @@
 import React, { useEffect, useState } from 'react';
 import ReactAudioPlayer from 'react-audio-player';
+import Square from './Square';
 import './PMappingUI.css'
 
 function PMappingUI({ isFirst, isLast, pieceName, onLastPiece, onNextPiece, finish, hoverClr, selectedClr }) {
 
     const [piecePath, setPiecePath] = useState(null);
-    const [mapping, setMapping] = useState(null); //[{color, unit(number of clicks/weight)}]
+    const [mapping, setMapping] = useState([]); //[{color, unit(number of clicks/weight)}]
+    const [warnDisplay, setWarnDisplay] = useState(false);
+
+    let warnStyle = warnDisplay
+    ? {display: "initial"}
+    : {display: "none"};
 
     useEffect(()=>{
         setPiecePath("audio/" + pieceName + ".mp3");
     },[pieceName]);
 
     function updateMapping(){
+        if (mapping.length < 3){
+            setWarnDisplay(false);
+            setMapping(mapping =>{
+                if (mapping.length === 0){
+                    return [{color: selectedClr, unit: 1}];
+                } else {
+                    return [...mapping, {color: selectedClr, unit: 1}]
+                }
+            });
+        } else{
+            setWarnDisplay(true);
+        }
+    }
+
+    function removeMapping(id){
         setMapping(mapping =>{
-            if (mapping === null){
-                return [{color: selectedClr, unit: 1}];
+            if (mapping.length === 1){
+                return [];
+            } else if (id === 0){
+                return mapping.slice(1,);
+            } else if (id === mapping.length-1){
+                return mapping.slice(0,id);
             } else {
-                return [...mapping, {color: selectedClr, unit: 1}]
+                return [...mapping.slice(0,id), ...mapping.slice(id+1,)];
             }
         });
     }
 
     function goBack(){
-        setMapping([{color: '#111111', weight: 0.8},{color: 'back', weight: 0.2}])
         onLastPiece(mapping);
+        setWarnDisplay(false);
     }
     function goNext(){
-        setMapping([{color: '#111111', weight: 0.8}])
         onNextPiece(mapping);
+        setWarnDisplay(false);
     }
     function onFinish(){
-        setMapping([{color: '#111111', weight: 0.8}])
         finish(mapping);
+        setWarnDisplay(false);
     }
 
     return (
@@ -70,6 +95,16 @@ function PMappingUI({ isFirst, isLast, pieceName, onLastPiece, onNextPiece, fini
                 <path d="M360.731,229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1,0s-5.3,13.8,0,19.1l215.5,215.5l-215.5,215.5c-5.3,5.3-5.3,13.8,0,19.1c2.6,2.6,6.1,4,9.5,4c3.4,0,6.9-1.3,9.5-4l225.1-225.1C365.931,242.875,365.931,234.275,360.731,229.075z"/> 
             </g> 
         </svg>}
+
+        <p id='pers-ins'> Selected color(s): </p>
+        <div id='pers-squares'>
+            {Object.keys(mapping).map((id) =>
+                <Square id={parseInt(id)} key={id}
+                clr={mapping[id].color} size={mapping[id].unit} 
+                removeSquare={removeMapping} />
+            )}
+        </div>
+        <p id='max-warning' style={warnStyle}> Up to 3 colors! Hover on the selected ones to see delete option. </p>
 
         <svg id='finish-icon' onClick={onFinish} vxmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
             <g fill='white'>

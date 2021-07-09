@@ -53,8 +53,6 @@ function Personalization({ onPageSwitch }) {
     });
   }
 
-  console.log(mappings);
-
   const mappingUIProps = {
     isFirst: curPieceId===0,    
     isLast: curPieceId===pieceQueue.length-1,

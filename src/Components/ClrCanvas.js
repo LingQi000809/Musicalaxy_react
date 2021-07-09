@@ -11,7 +11,6 @@ function ClrCanvas({updateHoverClr, updateSelectedClr}) {
       const img = imgRef.current;
       img.width = canvas.clientWidth;
       img.height = canvas.clientHeight;
-      console.log(canvas.clientWidth, canvas.clientHeight)
     //   BUG: pixels not changed when resized
       img.onload = () =>{
         ctx.canvas.width = img.width;
@@ -24,15 +23,11 @@ function ClrCanvas({updateHoverClr, updateSelectedClr}) {
     function getMouseClr(e){
         const canvas = canvasRef.current;
         let canvasRect = canvas.getBoundingClientRect();
-        console.log(e.clientX, e.clientY)
-        console.log(canvasRect)
         let x = e.clientX - canvasRect.left;
         let y = e.clientY - canvasRect.top;
-        console.log(x, y)
         const ctx = canvas.getContext("2d");
         let pixel = ctx.getImageData(x,y,1,1).data;
         let curClr = 'rgba(' + pixel[0] + ', ' + pixel[1] + ', ' + pixel[2] + ', ' + pixel[3] / 255 + ')';
-        console.log(curClr)
         return curClr;
     }
 

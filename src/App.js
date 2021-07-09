@@ -14,7 +14,7 @@ function App() {
   // page switch
 
   const startPageSwitch = useCallback((pageSwitchData) => {
-    setNextPage(pageSwitchData.state);
+    setNextPage(pageSwitchData.nextPage);
     toggleAnimated();
   }, [toggleAnimated])
 
