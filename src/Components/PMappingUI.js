@@ -3,11 +3,18 @@ import ReactAudioPlayer from 'react-audio-player';
 import Square from './Square';
 import './PMappingUI.css'
 
-function PMappingUI({ isFirst, isLast, pieceName, onLastPiece, onNextPiece, finish, hoverClr, selectedClr }) {
+function PMappingUI({ isFirst, isLast, pieceName, 
+    onLastPiece, onNextPiece, finish, 
+    hoverClr, selectedClr,
+    storedMapping }) {
 
     const [piecePath, setPiecePath] = useState(null);
-    const [mapping, setMapping] = useState([]); //[{color, unit(number of clicks/weight)}]
+    const [mapping, setMapping] = useState(storedMapping===null ? [] : storedMapping); //[{color, unit(number of clicks/weight)}]
     const [warnDisplay, setWarnDisplay] = useState(false);
+
+    useEffect(()=>{
+        console.log(storedMapping, storedMapping===null, mapping)
+    });
 
     let warnStyle = warnDisplay
     ? {display: "initial"}
@@ -33,6 +40,7 @@ function PMappingUI({ isFirst, isLast, pieceName, onLastPiece, onNextPiece, fini
     }
 
     function removeMapping(id){
+        setWarnDisplay(false);
         setMapping(mapping =>{
             if (mapping.length === 1){
                 return [];
@@ -45,17 +53,36 @@ function PMappingUI({ isFirst, isLast, pieceName, onLastPiece, onNextPiece, fini
             }
         });
     }
+    function incrementSquareSize(id){
+        let newMapping = Object.keys(mapping).map(i => 
+            parseInt(i)===id
+            ? {color: mapping[i].color, unit: mapping[i].unit+1} 
+            : mapping[i]);
+        setMapping(newMapping)
+    }
+    function decrementSquareSize(id){
+        let newMapping = Object.keys(mapping).map(i => 
+            parseInt(i)===id
+            ? {color: mapping[i].color, unit: mapping[i].unit-1} 
+            : mapping[i]);
+        setMapping(newMapping)
+    }
 
     function goBack(){
         onLastPiece(mapping);
-        setWarnDisplay(false);
+        resetUI();
     }
     function goNext(){
         onNextPiece(mapping);
-        setWarnDisplay(false);
+        resetUI();
     }
     function onFinish(){
         finish(mapping);
+        resetUI();
+    }
+
+    function resetUI(){
+        setMapping([]);
         setWarnDisplay(false);
     }
 
@@ -95,13 +122,21 @@ function PMappingUI({ isFirst, isLast, pieceName, onLastPiece, onNextPiece, fini
                 <path d="M360.731,229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1,0s-5.3,13.8,0,19.1l215.5,215.5l-215.5,215.5c-5.3,5.3-5.3,13.8,0,19.1c2.6,2.6,6.1,4,9.5,4c3.4,0,6.9-1.3,9.5-4l225.1-225.1C365.931,242.875,365.931,234.275,360.731,229.075z"/> 
             </g> 
         </svg>}
-
-        <p id='pers-ins'> Selected color(s): </p>
+        <p id='selected-colors'
+        style={{display:mapping.length===0?'none':'block'}}>
+             Selected color(s): </p>
+        <p id='pers-ins'
+        style={{display:mapping.length===0?'none':'block'}}>
+             Click to increase a color's weight.<br/> Double click to reduce. </p>
         <div id='pers-squares'>
-            {Object.keys(mapping).map((id) =>
-                <Square id={parseInt(id)} key={id}
-                clr={mapping[id].color} size={mapping[id].unit} 
-                removeSquare={removeMapping} />
+            {Object.keys(mapping).map((id) => {
+                let i=parseInt(id);
+                return <Square id={i} key={i}
+                clr={mapping[i].color} size={mapping[i].unit} 
+                removeSquare={removeMapping}
+                increSize={incrementSquareSize}
+                decreSize={decrementSquareSize} />
+            }
             )}
         </div>
         <p id='max-warning' style={warnStyle}> Up to 3 colors! Hover on the selected ones to see delete option. </p>

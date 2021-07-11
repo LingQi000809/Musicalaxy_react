@@ -15,19 +15,21 @@ function Personalization({ onPageSwitch }) {
     let pieces = ["Clair_de_Lune", "Dragon_Boy", "HeartBroken_Kiki", "Life_Incredible_Again", "Secret_Duo"];
     return pieces;
   }
+
+  console.log(mappings,mappings[curPieceId])
   
   function switchToLast(curMapping) {
-    updateMappings(curMapping);
+    storeMappings(curMapping);
     setCurPieceId(curPieceId-1);
   }
 
   function switchToNext(curMapping) {
-    updateMappings(curMapping);
+    storeMappings(curMapping);
     setCurPieceId(curPieceId+1);
   }
 
   function finish(curMapping){
-    updateMappings(curMapping);
+    storeMappings(curMapping);
     onPageSwitch({nextPage: 'WORKSPACE'})
   }
 
@@ -38,7 +40,8 @@ function Personalization({ onPageSwitch }) {
     setSelectedClr(clr);
   }
 
-  function updateMappings(curMapping){
+  function storeMappings(curMapping){
+    resetUI();
     setMappings(mappings => {
       let num = mappings.length;
       if (num===0){
@@ -51,6 +54,11 @@ function Personalization({ onPageSwitch }) {
         return [...mappings.slice(0,curPieceId), curMapping, ...mappings.slice(curPieceId+1,)]
       }
     });
+  }
+
+  function resetUI(){
+    updateHoverColor('white');
+    updateSelectedColor('white');
   }
 
   const mappingUIProps = {
@@ -66,13 +74,13 @@ function Personalization({ onPageSwitch }) {
 
   return (
     <div className='page' id='personalization-page'>
-      <ClrCanvas updateHoverClr={updateHoverColor} updateSelectedClr={updateSelectedColor}/>
-      <PMappingUI {...mappingUIProps}/>
+      <ClrCanvas updateHoverClr={updateHoverColor} 
+      updateSelectedClr={updateSelectedColor}/>
+      <PMappingUI {...mappingUIProps} />
     </div>
-
-      
   )
 }
 
+//Todo: when switch back, stored
 
 export default Personalization;
