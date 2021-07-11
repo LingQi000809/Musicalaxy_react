@@ -1,4 +1,3 @@
-import { getAllByTitle } from '@testing-library/react';
 import React, {useState, useRef} from 'react';
 import useDoubleClick from 'use-double-click';
 

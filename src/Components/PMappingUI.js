@@ -3,27 +3,36 @@ import ReactAudioPlayer from 'react-audio-player';
 import Square from './Square';
 import './PMappingUI.css'
 
-function PMappingUI({ isFirst, isLast, pieceName, 
-    onLastPiece, onNextPiece, finish, 
-    hoverClr, selectedClr,
-    storedMapping }) {
-
+function PMappingUI({ pieceQueue, finish, 
+    hoverClr, selectedClr, resetColors
+ }) {
+    ///////////////
+    // VARIABLES //
+    ///////////////
+    const [curPieceId, setCurPieceId] = useState(0);
     const [piecePath, setPiecePath] = useState(null);
-    const [mapping, setMapping] = useState(storedMapping===null ? [] : storedMapping); //[{color, unit(number of clicks/weight)}]
+
+    const [storedMappings, setMappings] = useState([]); // mapping for each piece
+    const [mapping, setMapping] = useState([]); //[{color, unit(number of clicks/weight)}]
+    
     const [warnDisplay, setWarnDisplay] = useState(false);
 
+
+    ///////////
+    // PIECE //
+    ///////////
     useEffect(()=>{
-        console.log(storedMapping, storedMapping===null, mapping)
-    });
+        console.log("setting piece path and current mapping");
+        setPiecePath("audio/" + pieceQueue[curPieceId] + ".mp3");
+        setMapping(storedMappings.length <= curPieceId
+            ? []
+            : storedMappings[curPieceId]);
+    },[curPieceId, storedMappings]);
 
-    let warnStyle = warnDisplay
-    ? {display: "initial"}
-    : {display: "none"};
 
-    useEffect(()=>{
-        setPiecePath("audio/" + pieceName + ".mp3");
-    },[pieceName]);
-
+    ///////////////////////////
+    // CURRENT PIECE MAPPING //
+    ///////////////////////////
     function updateMapping(){
         if (mapping.length < 3){
             setWarnDisplay(false);
@@ -38,7 +47,6 @@ function PMappingUI({ isFirst, isLast, pieceName,
             setWarnDisplay(true);
         }
     }
-
     function removeMapping(id){
         setWarnDisplay(false);
         setMapping(mapping =>{
@@ -53,38 +61,71 @@ function PMappingUI({ isFirst, isLast, pieceName,
             }
         });
     }
+
+    ////////////
+    // SQUARE //
+    ////////////
     function incrementSquareSize(id){
         let newMapping = Object.keys(mapping).map(i => 
             parseInt(i)===id
             ? {color: mapping[i].color, unit: mapping[i].unit+1} 
             : mapping[i]);
-        setMapping(newMapping)
+        setMapping(newMapping);
     }
     function decrementSquareSize(id){
         let newMapping = Object.keys(mapping).map(i => 
             parseInt(i)===id
             ? {color: mapping[i].color, unit: mapping[i].unit-1} 
             : mapping[i]);
-        setMapping(newMapping)
+        setMapping(newMapping);
     }
 
+    ////////////
+    // SWITCH //
+    ////////////
     function goBack(){
-        onLastPiece(mapping);
+        console.log("going back to id:", curPieceId-1)
+        // setMapping(storedMappings[curPieceId-1]);
+        storeMappings(mapping);
+        setCurPieceId(curPieceId-1);
         resetUI();
     }
     function goNext(){
-        onNextPiece(mapping);
+        console.log("going next to id:", curPieceId+1)
+        // setMapping(storedMappings.length === curPieceId+1
+        //     ? []
+        //     : storedMappings[curPieceId+1]);
+        storeMappings(mapping);
+        setCurPieceId(curPieceId+1);
         resetUI();
     }
     function onFinish(){
+        storeMappings(mapping);
         finish(mapping);
         resetUI();
     }
-
     function resetUI(){
-        setMapping([]);
         setWarnDisplay(false);
+        resetColors();
     }
+
+    //////////////
+    // MAPPINGS //
+    //////////////
+    function storeMappings(curMapping){
+        setMappings(mappings => {
+          let num = mappings.length;
+          if (num===0){
+            return [curMapping];
+          } else if (curPieceId===0){
+            return [curMapping, ...mappings.slice(1,)];
+          } else if (curPieceId===num-1){
+            return [...mappings.slice(0,num-1), curMapping]
+          } else{
+            return [...mappings.slice(0,curPieceId), curMapping, ...mappings.slice(curPieceId+1,)]
+          }
+        });
+      }
 
     return (
       <div id='mappingWrapper'>
@@ -93,7 +134,7 @@ function PMappingUI({ isFirst, isLast, pieceName,
         <ReactAudioPlayer
         id='audioPlayer'
         src={piecePath}
-        controls />
+        autoPlay controls />
         <div id='selection'>
             <div id='hoverClr' style={{backgroundColor: hoverClr}}></div>
             <div id='selectedClr' style={{backgroundColor: selectedClr}}></div>
@@ -108,14 +149,14 @@ function PMappingUI({ isFirst, isLast, pieceName,
         </svg>
         </div>
 
-        {isFirst
+        {curPieceId===0
         ? <></>
         : <svg id='back-icon' onClick={goBack} vxmlns="http://www.w3.org/2000/svg" viewBox="0 0 477.175 477.175">
             <g fill='white'>
                 <path d="M145.188,238.575l215.5-215.5c5.3-5.3,5.3-13.8,0-19.1s-13.8-5.3-19.1,0l-225.1,225.1c-5.3,5.3-5.3,13.8,0,19.1l225.1,225c2.6,2.6,6.1,4,9.5,4s6.9-1.3,9.5-4c5.3-5.3,5.3-13.8,0-19.1L145.188,238.575z"/>
             </g>
         </svg>}
-        {isLast
+        {curPieceId===pieceQueue.length-1
         ? <></>
         :<svg id='next-icon' onClick={goNext} vxmlns="http://www.w3.org/2000/svg" viewBox="0 0 477.175 477.175">
             <g fill='white'>
@@ -139,7 +180,9 @@ function PMappingUI({ isFirst, isLast, pieceName,
             }
             )}
         </div>
-        <p id='max-warning' style={warnStyle}> Up to 3 colors! Hover on the selected ones to see delete option. </p>
+        <p id='max-warning' 
+        style={warnDisplay ? {display: "initial"} : {display: "none"}}>
+             Up to 3 colors! Hover on the selected ones to see delete option. </p>
 
         <svg id='finish-icon' onClick={onFinish} vxmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
             <g fill='white'>

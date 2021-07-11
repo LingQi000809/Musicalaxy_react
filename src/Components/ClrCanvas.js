@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import './ClrCanvas.css';
 
 function ClrCanvas({updateHoverClr, updateSelectedClr}) {
@@ -43,7 +43,7 @@ function ClrCanvas({updateHoverClr, updateSelectedClr}) {
                 updateSelectedClr(curClr);
             }
             }/>
-          <img id="colorSquare" ref={imgRef} src='img/colorSquare.png' />
+          <img id="colorSquare" ref={imgRef} alt='pick color' src='img/colorSquare.png' />
         </div>
       )
   }

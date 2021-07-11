@@ -90,7 +90,7 @@
 #max-warning {
     text-align: left;
     letter-spacing: 0.2mm;
-    line-height: 1.1rem;
+    line-height: 1.5vh;
     font-size: 1.2vw;
     width: 70%;
     position: absolute;
@@ -126,7 +126,7 @@
 }
 
 #pers-squares * {
-    transition: all, 0.5s;
+    transition: width 0.5s;
 }
 
 #back-icon,
