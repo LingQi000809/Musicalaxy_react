@@ -22,12 +22,15 @@ function PMappingUI({ pieceQueue, finish,
     // PIECE //
     ///////////
     useEffect(()=>{
-        console.log("setting piece path and current mapping");
-        setPiecePath("audio/" + pieceQueue[curPieceId] + ".mp3");
+        console.log("setting current mapping");
         setMapping(storedMappings.length <= curPieceId
             ? []
             : storedMappings[curPieceId]);
-    },[curPieceId, storedMappings, pieceQueue]);
+    },[curPieceId, storedMappings]);
+
+    useEffect(()=>{
+        setPiecePath("audio/" + pieceQueue[curPieceId] + ".mp3");
+    }, [curPieceId, pieceQueue])
 
 
     ///////////////////////////
