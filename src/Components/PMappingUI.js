@@ -171,7 +171,7 @@ function PMappingUI({ pieceQueue, finish,
              Selected color(s): </p>
         <p id='pers-ins'
         style={{display:mapping.length===0?'none':'block'}}>
-             Click to increase a color's weight.<br/> Double click to reduce. </p>
+             Click to increase a color's weight.<br/> Double click to reduce it. </p>
         <div id='pers-squares'>
             {Object.keys(mapping).map((id) => {
                 let i=parseInt(id);

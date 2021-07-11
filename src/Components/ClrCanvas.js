@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import './ClrCanvas.css';
+import colorSquare from '../img/colorSquare.png';
 
 function ClrCanvas({updateHoverClr, updateSelectedClr}) {
     const canvasRef = useRef(null);
@@ -17,22 +18,6 @@ function ClrCanvas({updateHoverClr, updateSelectedClr}) {
       ctx.drawImage(img, 0, 0, img.width, img.height);
       img.style.display = 'none';
     }
-
-    // useEffect(()=>{
-    //   const canvas = canvasRef.current;
-    //   const ctx = canvas.getContext("2d");
-    //   const img = imgRef.current;
-    //   img.width = canvas.clientWidth;
-    //   img.height = canvas.clientHeight;
-    // //   BUG: pixels not changed when resized
-    //   img.onload = () =>{
-    //     console.log("image onload");
-    //     ctx.canvas.width = img.width;
-    //     ctx.canvas.height = img.height;
-    //     ctx.drawImage(img, 0, 0, img.width, img.height);
-    //     img.style.display = 'none';
-    //   }
-    // });
 
     function getMouseClr(e){
         const canvas = canvasRef.current;
@@ -58,7 +43,7 @@ function ClrCanvas({updateHoverClr, updateSelectedClr}) {
             }
             }/>
           <img id="colorSquare" ref={imgRef} alt='pick color' 
-          src='img/colorSquare.png'
+          src={colorSquare}
           onLoad={handleImgOnload} />
         </div>
       )
