@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/musicalaxy_react/static/css/main.b65cd006.chunk.css",
-    "main.js": "/musicalaxy_react/static/js/main.f235da6d.chunk.js",
-    "main.js.map": "/musicalaxy_react/static/js/main.f235da6d.chunk.js.map",
+    "main.js": "/musicalaxy_react/static/js/main.ef0279cc.chunk.js",
+    "main.js.map": "/musicalaxy_react/static/js/main.ef0279cc.chunk.js.map",
     "runtime-main.js": "/musicalaxy_react/static/js/runtime-main.7fa16702.js",
     "runtime-main.js.map": "/musicalaxy_react/static/js/runtime-main.7fa16702.js.map",
     "static/js/2.5e5f2cfe.chunk.js": "/musicalaxy_react/static/js/2.5e5f2cfe.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.7fa16702.js",
     "static/js/2.5e5f2cfe.chunk.js",
     "static/css/main.b65cd006.chunk.css",
-    "static/js/main.f235da6d.chunk.js"
+    "static/js/main.ef0279cc.chunk.js"
   ]
 }
