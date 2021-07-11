@@ -27,7 +27,7 @@ function PMappingUI({ pieceQueue, finish,
         setMapping(storedMappings.length <= curPieceId
             ? []
             : storedMappings[curPieceId]);
-    },[curPieceId, storedMappings]);
+    },[curPieceId, storedMappings, pieceQueue]);
 
 
     ///////////////////////////

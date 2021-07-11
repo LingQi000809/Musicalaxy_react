@@ -7,13 +7,11 @@ import PMappingUI from '../Components/PMappingUI';
 function Personalization({ onPageSwitch }) {
   const [hoverClr, setHoverClr] = useState('#FFFFFF');
   const [selectedClr, setSelectedClr] = useState('#FFFFFF');
-  const pieceQueue = buildPieceQueue();
+  const pieceQueue = ["Clair_de_Lune", "Dragon_Boy", "HeartBroken_Kiki", "Life_Incredible_Again", "Secret_Duo"];
 
-  function buildPieceQueue(){
-    let pieces = ["Clair_de_Lune", "Dragon_Boy", "HeartBroken_Kiki", "Life_Incredible_Again", "Secret_Duo"];
-    return pieces;
-}
   function finish(){
+    // add transition page: loading / training progress
+    // backend - storedMappings loading & training
     onPageSwitch({nextPage: 'WORKSPACE'})
   }
 
