@@ -37,21 +37,21 @@ function App() {
 
   // animation props
 
-  // const AnimationProps = {
-  //   in: isAnimated,
-  //   timeout: 1000,
-  // }
+  const AnimationProps = {
+    in: isAnimated,
+    timeout: 1000,
+  }
 
-  // const fromProps = {
-  //   ...AnimationProps,
-  //   classNames: 'from',
-  //   onEntered: finishPageSwitch
-  // }
+  const fromProps = {
+    ...AnimationProps,
+    classNames: 'from',
+    onEntered: finishPageSwitch
+  }
 
-  // const toProps = {
-  //   ...AnimationProps,
-  //   classNames: 'to'
-  // }
+  const toProps = {
+    ...AnimationProps,
+    classNames: 'to'
+  }
 
   // page props
 
