@@ -12,6 +12,7 @@ function Personalization({ onPageSwitch }) {
   function finish(){
     // add transition page: loading / training progress
     // backend - storedMappings loading & training
+    console.log("to be implemented: page switch")
     onPageSwitch({nextPage: 'WORKSPACE'})
   }
 

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import ReactAudioPlayer from 'react-audio-player';
 import Square from './Square';
 import './PMappingUI.css'
 
-function PMappingUI({ pieceQueue, finish, 
+function PMappingUI({ pieceQueue, finishPers, 
     hoverClr, selectedClr, resetColors
  }) {
     ///////////////
@@ -11,11 +11,14 @@ function PMappingUI({ pieceQueue, finish,
     ///////////////
     const [curPieceId, setCurPieceId] = useState(0);
     const [piecePath, setPiecePath] = useState(null);
+    const [rerender, forceRerender] = useState(true)
 
     const [storedMappings, setMappings] = useState([]); // mapping for each piece
-    const [mapping, setMapping] = useState([]); //[{color, unit(number of clicks/weight)}]
-    
+    const [mapping, setMapping] = useState([]); //[{color, size}]
+    const baseWidth = "20%"; // must be a percentage
     const [warnDisplay, setWarnDisplay] = useState(false);
+
+    const squaresDivRef = useRef()
 
 
     ///////////
@@ -36,14 +39,14 @@ function PMappingUI({ pieceQueue, finish,
     ///////////////////////////
     // CURRENT PIECE MAPPING //
     ///////////////////////////
-    function updateMapping(){
+    function addMapping(){
         if (mapping.length < 3){
             setWarnDisplay(false);
             setMapping(mapping =>{
                 if (mapping.length === 0){
-                    return [{color: selectedClr, unit: 1}];
+                    return [{color: selectedClr, size: baseWidth}];
                 } else {
-                    return [...mapping, {color: selectedClr, unit: 1}]
+                    return [...mapping, {color: selectedClr, size: baseWidth}]
                 }
             });
         } else{
@@ -68,43 +71,32 @@ function PMappingUI({ pieceQueue, finish,
     ////////////
     // SQUARE //
     ////////////
-    function incrementSquareSize(id){
-        let newMapping = Object.keys(mapping).map(i => 
-            parseInt(i)===id
-            ? {color: mapping[i].color, unit: mapping[i].unit+1} 
-            : mapping[i]);
-        setMapping(newMapping);
-    }
-    function decrementSquareSize(id){
-        let newMapping = Object.keys(mapping).map(i => 
-            parseInt(i)===id
-            ? {color: mapping[i].color, unit: mapping[i].unit-1} 
-            : mapping[i]);
-        setMapping(newMapping);
-    }
+    const updateSize = useCallback((id, newSize)=>{
+        // not using setMapping here -> prevent infinite loop (dependency: mapping)
+        // changing elements in mapping doesn't change the array reference 
+        mapping[id].size = newSize
+        forceRerender(false)
+        forceRerender(true)
+    },[mapping])
 
     ////////////
     // SWITCH //
     ////////////
     function goBack(){
         console.log("going back to id:", curPieceId-1)
-        // setMapping(storedMappings[curPieceId-1]);
         storeMappings(mapping);
         setCurPieceId(curPieceId-1);
         resetUI();
     }
     function goNext(){
         console.log("going next to id:", curPieceId+1)
-        // setMapping(storedMappings.length === curPieceId+1
-        //     ? []
-        //     : storedMappings[curPieceId+1]);
         storeMappings(mapping);
         setCurPieceId(curPieceId+1);
         resetUI();
     }
     function onFinish(){
         storeMappings(mapping);
-        finish(mapping);
+        finishPers();
         resetUI();
     }
     function resetUI(){
@@ -142,7 +134,7 @@ function PMappingUI({ pieceQueue, finish,
             <div id='hoverClr' style={{backgroundColor: hoverClr}}></div>
             <div id='selectedClr' style={{backgroundColor: selectedClr}}></div>
         </div>
-        <svg id='add-icon' onClick={updateMapping} vxmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44">
+        <svg id='add-icon' onClick={addMapping} vxmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44">
             <g fill='white'>
                 <path d="M22,44c-3.309,0-6-2.665-6-5.941V28H5.941C2.665,28,0,25.309,0,22s2.665-6,5.941-6H16V5.941C16,2.665,18.691,0,22,0
                 s6,2.665,6,5.941V16h10.059C41.335,16,44,18.691,44,22s-2.665,6-5.941,6H28v10.059C28,41.335,25.309,44,22,44z M5.941,18
@@ -169,23 +161,22 @@ function PMappingUI({ pieceQueue, finish,
         <p id='selected-colors'
         style={{display:mapping.length===0?'none':'block'}}>
              Selected color(s): </p>
-        <p id='pers-ins'
+        {/* <p id='pers-ins'
         style={{display:mapping.length===0?'none':'block'}}>
-             Click to increase a color's weight.<br/> Double click to reduce it. </p>
-        <div id='pers-squares'>
+             Click to increase a color's weight.<br/> Double click to reduce it. </p> */}
+        <div id='pers-squares' ref={squaresDivRef}>
             {Object.keys(mapping).map((id) => {
                 let i=parseInt(id);
-                return <Square id={i} key={i}
-                clr={mapping[i].color} size={mapping[i].unit} 
-                removeSquare={removeMapping}
-                increSize={incrementSquareSize}
-                decreSize={decrementSquareSize} />
+                return <Square id={i} key={i} clr={mapping[i].color} 
+                    baseWidth={baseWidth} maxWidth={squaresDivRef.current.offsetWidth} size={mapping[i].size} 
+                    removeSquare={removeMapping}
+                    updateSize={updateSize} />
             }
             )}
         </div>
         <p id='max-warning' 
         style={warnDisplay ? {display: "initial"} : {display: "none"}}>
-             Up to 3 colors! Hover on the selected ones to see delete option. </p>
+             Up to 3 colors! </p>
 
         <svg id='finish-icon' onClick={onFinish} vxmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
             <g fill='white'>

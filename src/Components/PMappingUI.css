@@ -54,7 +54,7 @@
 
 #selection {
     position: absolute;
-    top: 24%;
+    top: 26%;
     left: 0;
     width: 75%;
     height: 16.5%;
@@ -63,7 +63,7 @@
 #add-icon {
     position: absolute;
     width: 12%;
-    top: 30%;
+    top: 32%;
     right: 10%;
 }
 
@@ -90,7 +90,7 @@
 #max-warning {
     text-align: left;
     letter-spacing: 0.2mm;
-    line-height: 1.5vh;
+    line-height: 2vh;
     font-size: 1.2vw;
     width: 70%;
     position: absolute;
@@ -100,7 +100,7 @@
 
 #selected-colors {
     color: white;
-    top: 44%;
+    top: 48%;
 }
 
 #pers-ins {
@@ -112,21 +112,17 @@
 
 #max-warning {
     color: rgb(252, 172, 172);
-    bottom: 15%;
+    bottom: 14%;
 }
 
 #pers-squares {
     position: absolute;
-    top: 57%;
+    top: 55%;
     bottom: 18%;
-    height: 20%;
+    height: 25%;
     width: 70%;
     left: 50%;
     transform: translateX(-50%);
-}
-
-#pers-squares * {
-    transition: width 0.5s;
 }
 
 #back-icon,
