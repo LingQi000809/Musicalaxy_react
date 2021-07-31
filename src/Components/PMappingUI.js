@@ -32,7 +32,7 @@ function PMappingUI({ pieceQueue, finishPers,
     },[curPieceId, storedMappings]);
 
     useEffect(()=>{
-        setPiecePath("audio/" + pieceQueue[curPieceId] + ".mp3");
+        setPiecePath("audio_20s/" + pieceQueue[curPieceId] + ".m4a");
     }, [curPieceId, pieceQueue])
 
 
