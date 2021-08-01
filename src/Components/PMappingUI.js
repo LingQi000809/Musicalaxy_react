@@ -12,6 +12,7 @@ function PMappingUI({ pieceQueue, finishPers,
     const [curPieceId, setCurPieceId] = useState(0);
     const [piecePath, setPiecePath] = useState(null);
     const [rerender, forceRerender] = useState(true)
+    const [instructionDisplay, setInstructionDisplay] = useState(false)
 
     const [storedMappings, setMappings] = useState([]); // mapping for each piece
     const [mapping, setMapping] = useState([]); //[{color, size}]
@@ -19,6 +20,10 @@ function PMappingUI({ pieceQueue, finishPers,
     const [warnDisplay, setWarnDisplay] = useState(false);
 
     const squaresDivRef = useRef()
+    const highlight_text_style = {
+        color: "rgb(252, 172, 172)",
+        fontStyle: "italic"
+    }
 
 
     ///////////
@@ -103,6 +108,12 @@ function PMappingUI({ pieceQueue, finishPers,
         setWarnDisplay(false);
         resetColors();
     }
+    function showInstructions(){
+        setInstructionDisplay(true)
+    }
+    function hideInstructions(){
+        setInstructionDisplay(false)
+    }
 
     //////////////
     // MAPPINGS //
@@ -184,18 +195,37 @@ function PMappingUI({ pieceQueue, finishPers,
 	            <path d="M38.252,15.336l-15.369,17.29l-9.259-7.407c-0.43-0.345-1.061-0.274-1.405,0.156c-0.345,0.432-0.275,1.061,0.156,1.406l10,8C22.559,34.928,22.78,35,23,35c0.276,0,0.551-0.114,0.748-0.336l16-18c0.367-0.412,0.33-1.045-0.083-1.411C39.251,14.885,38.62,14.922,38.252,15.336z"/>            
             </g> 
         </svg>
-        <svg id='info-icon' vxmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+        <svg id='info-icon' onMouseEnter={showInstructions} onMouseLeave={hideInstructions}
+            vxmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
             <g fill='#C0D4FF'>
-            <path d="M26,0C11.663,0,0,11.663,0,26s11.663,26,26,26s26-11.663,26-26S40.337,0,26,0z M26,50C12.767,50,2,39.233,2,26
-		S12.767,2,26,2s24,10.767,24,24S39.233,50,26,50z"/>
-            <path d="M26,37c-0.553,0-1,0.447-1,1v2c0,0.553,0.447,1,1,1s1-0.447,1-1v-2C27,37.447,26.553,37,26,37z"/>
-            <path d="M26.113,9.001C26.075,9.001,26.037,9,25.998,9c-2.116,0-4.106,0.815-5.615,2.304C18.847,12.819,18,14.842,18,17
-                c0,0.553,0.447,1,1,1s1-0.447,1-1c0-1.618,0.635-3.136,1.787-4.272c1.153-1.137,2.688-1.765,4.299-1.727
-                c3.161,0.044,5.869,2.752,5.913,5.913c0.029,2.084-0.999,4.002-2.751,5.132C26.588,23.762,25,26.794,25,30.158V33
-                c0,0.553,0.447,1,1,1s1-0.447,1-1v-2.842c0-2.642,1.276-5.105,3.332-6.432c2.335-1.506,3.706-4.063,3.667-6.84
-                C33.939,12.599,30.401,9.061,26.113,9.001z"/>
-        </g> 
+                <path d="M26,0C11.663,0,0,11.663,0,26s11.663,26,26,26s26-11.663,26-26S40.337,0,26,0z M26,50C12.767,50,2,39.233,2,26
+                    S12.767,2,26,2s24,10.767,24,24S39.233,50,26,50z"/>
+                <path d="M26,37c-0.553,0-1,0.447-1,1v2c0,0.553,0.447,1,1,1s1-0.447,1-1v-2C27,37.447,26.553,37,26,37z"/>
+                <path d="M26.113,9.001C26.075,9.001,26.037,9,25.998,9c-2.116,0-4.106,0.815-5.615,2.304C18.847,12.819,18,14.842,18,17
+                    c0,0.553,0.447,1,1,1s1-0.447,1-1c0-1.618,0.635-3.136,1.787-4.272c1.153-1.137,2.688-1.765,4.299-1.727
+                    c3.161,0.044,5.869,2.752,5.913,5.913c0.029,2.084-0.999,4.002-2.751,5.132C26.588,23.762,25,26.794,25,30.158V33
+                    c0,0.553,0.447,1,1,1s1-0.447,1-1v-2.842c0-2.642,1.276-5.105,3.332-6.432c2.335-1.506,3.706-4.063,3.667-6.84
+                    C33.939,12.599,30.401,9.061,26.113,9.001z"/>
+            </g> 
         </svg>
+        <div className="module-wrapper" style={{display: instructionDisplay?"initial":"none"}}>
+            <div className="module" id="personalization-instructions"
+                onMouseEnter={showInstructions} onMouseLeave={hideInstructions}>
+                <p style={{textAlign: "center"}}>
+                <span style={{color: "#C0D4FF", fontSize: "larger", fontStyle: "italic"}}> 
+                    "Music is colorful."&nbsp;&nbsp;
+                </span>
+                Let the machine learn how you perceive music in a colorful way.
+                </p>
+                <ul> 
+                    <li> For each excerpt, select 0-3 colors via the <span style={highlight_text_style}> add </span> icon. Selected colors will show up as rectangles. </li>
+                    <li> You may <span style={highlight_text_style}> assign weights </span> to a color by dragging its right edge.</li>
+                    <li> You can also find the <span style={highlight_text_style}> delete </span> icon on hover. </li>
+                    <li> Go <span style={highlight_text_style}>next</span> or go <span style={highlight_text_style}>back</span> by clicking the arrows on the two sides.</li>
+                    <li> Finish personalization at any time.</li>
+                </ul>
+            </div>
+        </div>
       </div>
   )
 }

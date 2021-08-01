@@ -15,3 +15,25 @@
         width: 96vw;
     }
 }
+
+.module-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+.module {
+    border: 3px solid;
+    padding: 1.5rem;
+    background-color: rgba(0, 0, 0, 0.7);
+    opacity: 100%;
+    z-index: 2;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}
