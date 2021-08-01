@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/musicalaxy_react/static/css/main.aa3609c0.chunk.css",
-    "main.js": "/musicalaxy_react/static/js/main.8efed458.chunk.js",
-    "main.js.map": "/musicalaxy_react/static/js/main.8efed458.chunk.js.map",
+    "main.css": "/musicalaxy_react/static/css/main.8b47108a.chunk.css",
+    "main.js": "/musicalaxy_react/static/js/main.5d632d49.chunk.js",
+    "main.js.map": "/musicalaxy_react/static/js/main.5d632d49.chunk.js.map",
     "runtime-main.js": "/musicalaxy_react/static/js/runtime-main.7fa16702.js",
     "runtime-main.js.map": "/musicalaxy_react/static/js/runtime-main.7fa16702.js.map",
     "static/js/2.256595bb.chunk.js": "/musicalaxy_react/static/js/2.256595bb.chunk.js",
     "static/js/2.256595bb.chunk.js.map": "/musicalaxy_react/static/js/2.256595bb.chunk.js.map",
     "index.html": "/musicalaxy_react/index.html",
-    "static/css/main.aa3609c0.chunk.css.map": "/musicalaxy_react/static/css/main.aa3609c0.chunk.css.map",
+    "static/css/main.8b47108a.chunk.css.map": "/musicalaxy_react/static/css/main.8b47108a.chunk.css.map",
     "static/js/2.256595bb.chunk.js.LICENSE.txt": "/musicalaxy_react/static/js/2.256595bb.chunk.js.LICENSE.txt",
     "static/media/colorSquare.68d8802c.png": "/musicalaxy_react/static/media/colorSquare.68d8802c.png"
   },
   "entrypoints": [
     "static/js/runtime-main.7fa16702.js",
     "static/js/2.256595bb.chunk.js",
-    "static/css/main.aa3609c0.chunk.css",
-    "static/js/main.8efed458.chunk.js"
+    "static/css/main.8b47108a.chunk.css",
+    "static/js/main.5d632d49.chunk.js"
   ]
 }
