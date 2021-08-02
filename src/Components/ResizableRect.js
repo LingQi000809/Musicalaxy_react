@@ -1,6 +1,6 @@
 import React, {useState, useRef, useCallback, useEffect} from 'react';
 
-function Square({id, clr, baseWidth, maxWidth, size, removeSquare, updateSize}) {
+function ResizableRect({id, clr, baseWidth, maxWidth, size, removeSquare, updateSize}) {
     const squareRef = useRef();
     const wrapperRef = useRef();
     const [interfaceDisplay, setInterfaceDisplay] = useState(false);
@@ -50,7 +50,7 @@ function Square({id, clr, baseWidth, maxWidth, size, removeSquare, updateSize}) 
     const mouseMoveHandler = useCallback(e=>{
         let wrapperRect = wrapperRef.current.getBoundingClientRect();
         let wrapperLeft = wrapperRect.left;
-        let minWidth = maxWidth * parseInt(baseWidth.slice(0, -1)) / 100
+        let minWidth = baseWidth
         let mouseLeft = e.clientX;
         let newSize = mouseLeft - wrapperLeft;
         if (newSize < minWidth || newSize > maxWidth){
@@ -109,4 +109,4 @@ function Square({id, clr, baseWidth, maxWidth, size, removeSquare, updateSize}) 
     )
   }
   
-  export default Square
+  export default ResizableRect

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import ReactAudioPlayer from 'react-audio-player';
-import Square from './Square';
+import ResizableRect from './ResizableRect';
 import './PMappingUI.css'
 
 function PMappingUI({ pieceQueue, finishPers, 
@@ -16,7 +16,7 @@ function PMappingUI({ pieceQueue, finishPers,
 
     const [storedMappings, setMappings] = useState([]); // mapping for each piece
     const [mapping, setMapping] = useState([]); //[{color, size}]
-    const baseWidth = "20%"; // must be a percentage
+    const baseWidth = 50; // must be a percentage
     const [warnDisplay, setWarnDisplay] = useState(false);
 
     const squaresDivRef = useRef()
@@ -89,20 +89,17 @@ function PMappingUI({ pieceQueue, finishPers,
     ////////////
     function goBack(){
         console.log("going back to id:", curPieceId-1)
-        storeMappings(mapping);
         setCurPieceId(curPieceId-1);
         resetUI();
     }
     function goNext(){
         console.log("going next to id:", curPieceId+1)
-        storeMappings(mapping);
         setCurPieceId(curPieceId+1);
         resetUI();
     }
     function onFinish(){
-        storeMappings(mapping);
-        finishPers();
         resetUI();
+        finishPers(storedMappings);
     }
     function resetUI(){
         setWarnDisplay(false);
@@ -118,20 +115,14 @@ function PMappingUI({ pieceQueue, finishPers,
     //////////////
     // MAPPINGS //
     //////////////
-    function storeMappings(curMapping){
-        setMappings(mappings => {
-          let num = mappings.length;
-          if (num===0){
-            return [curMapping];
-          } else if (curPieceId===0){
-            return [curMapping, ...mappings.slice(1,)];
-          } else if (curPieceId===num-1){
-            return [...mappings.slice(0,num-1), curMapping]
-          } else{
-            return [...mappings.slice(0,curPieceId), curMapping, ...mappings.slice(curPieceId+1,)]
-          }
-        });
-      }
+    useEffect(()=>{  
+        let num = storedMappings.length;
+        if (curPieceId >= num){
+            storedMappings.push(mapping);
+        } else{
+            storedMappings.splice(curPieceId, 1, mapping)
+        }
+    }, [mapping, curPieceId, storedMappings])
 
     return (
       <div id='mappingWrapper'>
@@ -178,7 +169,7 @@ function PMappingUI({ pieceQueue, finishPers,
         <div id='pers-squares' ref={squaresDivRef}>
             {Object.keys(mapping).map((id) => {
                 let i=parseInt(id);
-                return <Square id={i} key={i} clr={mapping[i].color} 
+                return <ResizableRect id={i} key={i} clr={mapping[i].color} 
                     baseWidth={baseWidth} maxWidth={squaresDivRef.current.offsetWidth} size={mapping[i].size} 
                     removeSquare={removeMapping}
                     updateSize={updateSize} />

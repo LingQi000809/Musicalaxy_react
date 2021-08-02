@@ -9,11 +9,13 @@ function Personalization({ onPageSwitch }) {
   const [selectedClr, setSelectedClr] = useState('#FFFFFF');
   const pieceQueue = ["Clair_de_Lune", "Dragon_Boy", "HeartBroken_Kiki", "Life_Incredible_Again", "Secret_Duo"];
 
-  function finish(){
+  function finish(mappings){
     // add transition page: loading / training progress
     // backend - storedMappings loading & training
-    console.log("to be implemented: page switch")
-    onPageSwitch({nextPage: 'WORKSPACE'})
+    onPageSwitch({
+      nextPage: 'TRAINING',
+      pieceMappingMap: compileMappings(mappings)
+    })
   }
 
   function updateHoverColor(clr){
@@ -28,6 +30,18 @@ function Personalization({ onPageSwitch }) {
     updateSelectedColor('white');
   }
 
+  function compileMappings(mappings){
+    let pieceMappingMap = new Map()
+    for (let i=0; i<mappings.length; i++){
+      let curMapping = mappings[i];
+      // skip pieces for which the user doesn't select any color
+      if (curMapping.length===0) continue;
+      // record the piece name as key and mappings as value
+      pieceMappingMap.set(pieceQueue[i], curMapping)
+    }
+    console.log(pieceMappingMap)
+    return pieceMappingMap
+  }
 
   const mappingUIProps = {
     pieceQueue: pieceQueue,
