@@ -16,9 +16,16 @@ function App() {
 
   // page switch
   const startPageSwitch = useCallback((pageSwitchData) => {
-    let nextPage = pageSwitchData.nextPage
-    setCurPage(nextPage)
+    let nextPage = pageSwitchData.nextPage;
+    setCurPage(nextPage);
     switch (nextPage){
+      case "PERSONALIZATION":
+        setPageSpecialProps({
+          startPieceId: pageSwitchData.startPieceId,
+          curMappings: pageSwitchData.curMappings,
+          curPieces: pageSwitchData.curPieces
+        });
+        break;
       case "TRAINING":
         setPageSpecialProps({
           pieceMappingMap: pageSwitchData.pieceMappingMap
@@ -28,7 +35,6 @@ function App() {
         setPageSpecialProps({});
         break;
     }
-
     // setNextPage(nextPage);
     // toggleAnimated();
   }, [setCurPage, setPageSpecialProps])
@@ -42,7 +48,7 @@ function App() {
   function renderSwitch(curPage){
     switch(curPage){
       case 'PERSONALIZATION':
-        return <Personalization {...pageProps}/>;
+        return <Personalization {...pageProps} {...pageSpecialProps}/>;
       case 'TRAINING':
         return <Training {...pageProps} {...pageSpecialProps}/>
       case 'WORKSPACE':

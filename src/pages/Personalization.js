@@ -4,10 +4,11 @@ import './Personalization.css';
 import ClrCanvas from '../Components/ClrCanvas';
 import PMappingUI from '../Components/PMappingUI';
 
-function Personalization({ onPageSwitch }) {
+function Personalization({ curMappings, startPieceId, curPieces, onPageSwitch }) {
   const [hoverClr, setHoverClr] = useState('#FFFFFF');
   const [selectedClr, setSelectedClr] = useState('#FFFFFF');
-  const pieceQueue = ["Clair_de_Lune", "Dragon_Boy", "HeartBroken_Kiki", "Life_Incredible_Again", "Secret_Duo"];
+  const defaultPieces = ["Clair_de_Lune", "Dragon_Boy", "HeartBroken_Kiki", "Life_Incredible_Again", "Secret_Duo"];
+  const pieceQueue = curPieces? curPieces: defaultPieces;
 
   function finish(mappings){
     // add transition page: loading / training progress
@@ -49,6 +50,8 @@ function Personalization({ onPageSwitch }) {
     hoverClr: hoverClr,
     selectedClr: selectedClr,
     resetColors: resetColors,
+    curMappings: curMappings? curMappings: [], 
+    startPieceId: startPieceId? startPieceId: 0,
   }
 
   return (

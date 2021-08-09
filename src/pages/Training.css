@@ -1,0 +1,14 @@
+#cards {
+    margin-top: 2rem;
+}
+
+#training-btn #home-btn {
+    font-size: medium;
+}
+
+#no-mappings-text {
+    font-weight: lighter;
+    text-align: center;
+    color: white;
+    letter-spacing: 0.2rem;
+}

@@ -4,17 +4,18 @@ import ResizableRect from './ResizableRect';
 import './PMappingUI.css'
 
 function PMappingUI({ pieceQueue, finishPers, 
-    hoverClr, selectedClr, resetColors
+    hoverClr, selectedClr, resetColors,
+    curMappings, startPieceId
  }) {
     ///////////////
     // VARIABLES //
     ///////////////
-    const [curPieceId, setCurPieceId] = useState(0);
+    const [curPieceId, setCurPieceId] = useState(startPieceId);
     const [piecePath, setPiecePath] = useState(null);
     const [rerender, forceRerender] = useState(true)
     const [instructionDisplay, setInstructionDisplay] = useState(false)
 
-    const [storedMappings, setMappings] = useState([]); // mapping for each piece
+    const [storedMappings, setMappings] = useState(curMappings? curMappings: []); // mapping for each piece
     const [mapping, setMapping] = useState([]); //[{color, size}]
     const baseWidth = 50; // must be a percentage
     const [warnDisplay, setWarnDisplay] = useState(false);
@@ -199,8 +200,8 @@ function PMappingUI({ pieceQueue, finishPers,
                     C33.939,12.599,30.401,9.061,26.113,9.001z"/>
             </g> 
         </svg>
-        <div className="module-wrapper" style={{display: instructionDisplay?"initial":"none"}}>
-            <div className="module" id="personalization-instructions"
+        <div className="modal-wrapper" style={{display: instructionDisplay?"initial":"none"}}>
+            <div className="modal" id="personalization-instructions"
                 onMouseEnter={showInstructions} onMouseLeave={hideInstructions}>
                 <p style={{textAlign: "center"}}>
                 <span style={{color: "#C0D4FF", fontSize: "larger", fontStyle: "italic"}}> 
