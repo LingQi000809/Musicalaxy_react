@@ -5,7 +5,6 @@ import './Training.css';
 function Training({ onPageSwitch, pieceMappingMap }) {
   let cardComps = [];
 
-  console.log(pieceMappingMap)
   function editPieceMapping(piece){
     let pieceNames = Array.from(pieceMappingMap.keys());
     let pieceMappings = Array.from(pieceMappingMap.values());
@@ -32,7 +31,7 @@ function Training({ onPageSwitch, pieceMappingMap }) {
       <div id="cards">
         {cardComps}
       </div>
-      {pieceMappingMap.length==0
+      {pieceMappingMap.size!==0
       ? <button id="training-btn"> START TRAINING </button>
       : <div>
           <p id="no-mappings-text"> No Mappings Added </p> 
