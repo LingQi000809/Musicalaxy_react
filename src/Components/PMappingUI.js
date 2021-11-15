@@ -132,7 +132,7 @@ function PMappingUI({ pieceQueue, finishPers,
         <ReactAudioPlayer
         id='audioPlayer'
         src={piecePath}
-        autoPlay controls />
+        autoPlay controls loop />
         <div id='selection'>
             <div id='hoverClr' style={{backgroundColor: hoverClr}}></div>
             <div id='selectedClr' style={{backgroundColor: selectedClr}}></div>
