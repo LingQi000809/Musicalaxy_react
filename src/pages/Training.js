@@ -32,7 +32,7 @@ function Training({ onPageSwitch, pieceMappingMap }) {
         {cardComps}
       </div>
       {pieceMappingMap.size!==0
-      ? <button id="training-btn"> START TRAINING </button>
+      ? <button id="training-btn"> GENERATE MY MUSICALAXY </button>
       : <div>
           <p id="no-mappings-text"> No Mappings Added </p> 
           <button id="home-btn"> RETURN HOME</button> 
